@@ -1,51 +1,22 @@
 ﻿using System;
-using RestSharp;
-using RestSharp.Serialization.Json;
 
 namespace SpacePark
 {
-    class Program
+    internal class Program
     {
-        static void Main(string[] args)
+        private static void Main(string[] args)
         {
-            Rest rest = new Rest();
+            Rest starwars = new Rest();
 
-            //Söker för innehåll r2
-            var R2D2request = "people/?search=r2";
-            var searchresponse = rest.StarWarsApiRequest(R2D2request);
+            //Söker med swapi, sparar svaret i dynamisk typ
+            Console.WriteLine("sök personer:");
+            string input = Console.ReadLine();
+            var results = starwars.Search(input);
 
-            //Skapa en dictionairy av json-svaret
-            var person = rest.Deserialize<dynamic>(searchresponse);
-            var results = person["results"][0];
-
-            //Skriv ut namn från dictionary, borde vara R2D2
-            Console.WriteLine(results["name"]);
+            //Databasen lagras i \bin\debug.. för tillfället
+            Database.StoreInDatabase(results);
             Console.ReadLine();
-            
-            // Live Share Test
             // NOTE: The Swreponse is a custom class which represents the data returned by the API, RestClient have buildin ORM which maps the data arom the reponse into a given type of object
-        }
-    }
-    public class Rest
-    {
-        public T Deserialize<T>(IRestResponse response)
-        {
-
-            var deser = new JsonSerializer();
-            var person = deser.Deserialize<T>(response);
-            return person;
-        }
-
-        public IRestResponse StarWarsApiRequest(string req)
-        {
-
-            var client = new RestClient("https://swapi.dev/api/");
-            var request = new RestRequest(req, DataFormat.Json);
-            var response = client.Get(request);
-            return response;
-
-            //var request = new RestRequest("people/", DataFormat.Json);
-            //var response = client.Get(request);
         }
     }
 }
