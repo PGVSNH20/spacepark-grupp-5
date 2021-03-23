@@ -12,6 +12,7 @@ namespace SpacePark
             Console.WriteLine("sök personer:");
             string input = Console.ReadLine();
             var results = starwars.Search(input);
+            var ships = starwars.GetShips();
 
             //Databasen lagras i \bin\debug.. för tillfället
             Database.StoreInDatabase(results);

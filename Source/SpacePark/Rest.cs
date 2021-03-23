@@ -1,6 +1,7 @@
 ﻿using RestSharp;
 using RestSharp.Serialization.Json;
 using System;
+using System.Collections.Generic;
 
 namespace SpacePark
 {
@@ -43,6 +44,40 @@ namespace SpacePark
             var response = client.Get(request);
             return response;
             //var request = new RestRequest("people/", DataFormat.Json);
+        }
+
+        public dynamic GetShips()
+        {
+            IRestResponse request = StarWarsApiRequest("starships/");
+            var ship = Deserialize<dynamic>(request);
+            List<dynamic> ships = new List<dynamic>();
+            try
+            {
+                int y = new int();
+                //json-svaret är i key value pairs
+                for (int i = 0; i < 30; i++)
+                {
+                y++;
+                var results = ship["results"][i];
+                
+
+                    //Skriv ut från key value
+                    Console.WriteLine($"Shipname: {results["name"]}");
+                    if (y == 10)
+                    {
+                        results = results["next"][i];
+                        y = 0;
+                    }
+
+                ships.Add(results);    
+                }
+
+                return ships;
+            }
+            catch(Exception)
+            {
+                throw new Exception("Ops, något fel hände");
+            }
         }
     }
 }
