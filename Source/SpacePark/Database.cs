@@ -26,6 +26,7 @@ namespace SpacePark
             db.SaveChanges();
 
             Console.WriteLine($"{person.FirstName} har parkerat med {starship.StarShipName} i {person.Time} och får betala {person.Price} credits");
+            PrintFromDatabase(db);
         }
 
         public static void InputCreationTestWithApi()
@@ -43,6 +44,17 @@ namespace SpacePark
                 StarShip starShip = new StarShip() { StarShipId = 1, StarShipName = "Millenium Falcon" };
                 db.Add(starShip);
                 db.SaveChanges();
+            }
+        }
+
+        public static void PrintFromDatabase(SpaceParkContext db)
+        {
+            var noQueryList = db.ParkEvent.AsQueryable();
+            Console.WriteLine("Parkeringar som gjorts hitills: ");
+            foreach (var query in noQueryList)
+            {
+                query.StarShip = db.StarShip.Find(query.StarShipId);
+                Console.WriteLine($"{query.FirstName} {query.LastName} parkerade i {query.Time} med skeppet \"{query.StarShip.StarShipName}\" och det kostade {query.Price} credits\n");
             }
         }
     }

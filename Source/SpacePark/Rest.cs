@@ -46,38 +46,41 @@ namespace SpacePark
             //var request = new RestRequest("people/", DataFormat.Json);
         }
 
-        public dynamic GetShips()
+        public List<dynamic> GetShips()
         {
-            IRestResponse request = StarWarsApiRequest("starships/");
-            var ship = Deserialize<dynamic>(request);
+            List<dynamic> pageships = new List<dynamic>();
             List<dynamic> ships = new List<dynamic>();
+
             try
             {
-                int y = new int();
-                //json-svaret är i key value pairs
-                for (int i = 0; i < 30; i++)
+                for (var i = 1; i < 5; i++)
                 {
-                y++;
-                var results = ship["results"][i];
-                
-
-                    //Skriv ut från key value
-                    Console.WriteLine($"Shipname: {results["name"]}");
-                    if (y == 10)
-                    {
-                        results = results["next"][i];
-                        y = 0;
-                    }
-
-                ships.Add(results);    
+                    var pageresponse = GetPageNumber(i);
+                    var pageship = Deserialize<dynamic>(pageresponse);
+                    pageships.Add(pageship);
                 }
 
-                return ships;
+                foreach (var ship in pageships)
+                {
+                    for (var i = 0; i < ship["results"].Count; i++ )
+                    {
+                        var results = ship["results"][i];
+                        ships.Add(results);
+                        if (results != null) Console.WriteLine($"Shipname: {results["name"]} kostar {results["cost_in_credits"]}");
+                    }
+                }
             }
-            catch(Exception)
+            catch (Exception ex)
             {
-                throw new Exception("Ops, något fel hände");
+                Console.WriteLine("Ops, något fel hände", ex);
             }
+            return ships;
+        }
+        public IRestResponse GetPageNumber(int pagenumber)
+        {
+            //"next": "http://swapi.dev/api/starships/?page=2"
+            IRestResponse response = StarWarsApiRequest($"starships/?page={pagenumber}");
+            return response;
         }
     }
 }
