@@ -28,7 +28,7 @@ namespace SpacePark
                 //json-svaret är i key value pairs
                 var results = person["results"][0];
                 //Skriv ut från key value
-                Console.WriteLine($"Namn: {results["name"]}, Födelseår: {results["birth_year"]}, Hårfärg: {results["hair_color"]}");
+                //Console.WriteLine($"Namn: {results["name"]}, Födelseår: {results["birth_year"]}, Hårfärg: {results["hair_color"]}");
                 return results;
             }
             catch (ArgumentOutOfRangeException)
