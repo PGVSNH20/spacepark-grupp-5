@@ -1,10 +1,11 @@
 ﻿using System;
+using SpaceApp;
 
 namespace SpacePark
 {
     public class Database
     {
-        public static void StoreInDatabase(dynamic results)
+        public static string StoreInDatabase(dynamic results)
         {
             //Ser till att databasen är skapad
             var db = new SpaceParkContext();
@@ -29,16 +30,15 @@ namespace SpacePark
             db.Add(person);
             db.SaveChanges();
 
-            Console.WriteLine($"{person.FirstName} har parkerat med {starship.StarShipName} i {person.Time} och får betala {person.Price} credits");
-            PrintFromDatabase(db);
+            return ($"{person.FirstName} har parkerat med {starship.StarShipName} i {person.Time} och får betala {person.Price} credits");
         }
 
         public static void InputCreationTestWithApi()
         {
             Rest starwars = new Rest();
-            var results = starwars.Search("luke");
+           // var results = starwars.Search("luke", this);
 
-            StoreInDatabase(results);
+           // StoreInDatabase(results);
         }
 
         public static void AddMilleniumFalconToDatabase(SpaceParkContext db)
@@ -51,14 +51,15 @@ namespace SpacePark
             }
         }
 
-        public static void PrintFromDatabase(SpaceParkContext db)
+        public static void PrintFromDatabase(SpaceParkContext db, Form1 form)
         {
+            db.Database.EnsureCreated();
             var noQueryList = db.ParkEvent.AsQueryable();
-            Console.WriteLine("Parkeringar som gjorts hitills: ");
+            form.listBox1.Items.Add("Parkeringar som gjorts hitills: ");
             foreach (var query in noQueryList)
             {
                 query.StarShip = db.StarShip.Find(query.StarShipId);
-                Console.WriteLine($"{query.FirstName} {query.LastName} parkerade i {query.Time} med skeppet \"{query.StarShip.StarShipName}\" och det kostade {query.Price} credits\n");
+                form.listBox1.Items.Add($"{query.FirstName} {query.LastName} parkerade i {query.Time} med skeppet \"{query.StarShip.StarShipName}\" och det kostade {query.Price} credits\n");
             }
         }
     }

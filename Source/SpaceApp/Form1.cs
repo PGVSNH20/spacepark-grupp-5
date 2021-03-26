@@ -1,13 +1,7 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.ComponentModel;
-using System.Data;
 using System.Drawing;
-using System.Linq;
-using System.Text;
 using System.Threading.Tasks;
 using System.Windows.Forms;
-using RestSharp;
 using SpacePark;
 
 namespace SpaceApp
@@ -17,13 +11,32 @@ namespace SpaceApp
         public Form1()
         {
             InitializeComponent();
+            
         }
 
-        private void button1_Click_1(object sender, EventArgs e)
+        private async void button1_Click_1Async(object sender, EventArgs e)
         {
             Rest starwars = new Rest();
-            var results = starwars.Search(textBox1.Text);
-            listBox1.Items.Add($"namn: {results["name"]} född: {results["birth_year"]}");
+            var person = await starwars.SearchAsync(textBox1.Text);
+            try
+            {
+                //json-svaret är i key value pairs
+                var results = person["results"][0];
+                yesPark.Visible = true;
+                noPark.Visible = false;
+                if (results != null) listBox1.Items.Add($"namn: {results["name"]} född: {results["birth_year"]}");
+                await Task.Delay(1000);
+                this.Hide();
+                Form2 form2 = new Form2();
+                form2.ShowForm(results);
+                //Skriv ut från key value
+                //Console.WriteLine($"Namn: {results["name"]}, Födelseår: {results["birth_year"]}, Hårfärg: {results["hair_color"]}");
+            }
+            catch (ArgumentOutOfRangeException)
+            {
+                noPark.Visible = true;
+                yesPark.Visible = false;
+            }
         }
 
         private void Form1_Load(object sender, EventArgs e)
@@ -32,14 +45,19 @@ namespace SpaceApp
         }
 
 
+
+
         private void textBox1_TextChanged(object sender, EventArgs e)
         {
 
         }
 
-        private void label1_Click(object sender, EventArgs e)
+        private async void label1_ClickAsync(object sender, EventArgs e)
         {
-            
+            Rest starwars = new Rest();
+            var results = await starwars.SearchAsync(textBox1.Text);
+            SpaceParkContext db = new SpaceParkContext();
+            Database.PrintFromDatabase(db, this);
         }
 
         private void label2_Click(object sender, EventArgs e)
@@ -49,24 +67,13 @@ namespace SpaceApp
 
         private void listBox1_SelectedIndexChanged(object sender, EventArgs e)
         {
-
-        }
-
-        private void button2_Click_1(object sender, EventArgs e)
-        {
-            Rest starwars = new Rest();
-            starwars.GetShips(this);
-        }
-
-        private void label4_Click(object sender, EventArgs e)
-        {
-
         }
     }
 
     /*public class RundKnapp : Button
     {
         GraphicsPath p = new GraphicsPath();
-        p.AddEllipse()
+        p.AddEllipse(1, 1, this.width - 4, this.width - 4);
+        this.region = new Region(p);
     }*/
 }
