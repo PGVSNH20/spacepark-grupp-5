@@ -1,7 +1,9 @@
 ﻿using RestSharp;
 using RestSharp.Serialization.Json;
+using SpaceApp;
 using System;
 using System.Collections.Generic;
+using System.Windows.Forms;
 
 namespace SpacePark
 {
@@ -46,41 +48,32 @@ namespace SpacePark
             //var request = new RestRequest("people/", DataFormat.Json);
         }
 
-        public List<dynamic> GetShips()
-        {
-            List<dynamic> pageships = new List<dynamic>();
+        public List<dynamic> GetShips(Form1 form)
+        {            
             List<dynamic> ships = new List<dynamic>();
+
+            Random rand = new Random();
 
             try
             {
-                for (var i = 1; i < 5; i++)
-                {
-                    var pageresponse = GetPageNumber(i);
-                    var pageship = Deserialize<dynamic>(pageresponse);
-                    pageships.Add(pageship);
-                }
+                var page = rand.Next(1, 5);
+                var response = StarWarsApiRequest($"starships/?page={page}");
+                var ship = Deserialize<dynamic>(response);
 
-                foreach (var ship in pageships)
+
+                for (var i = 0; i < 3; i++ )
                 {
-                    for (var i = 0; i < ship["results"].Count; i++ )
-                    {
-                        var results = ship["results"][i];
-                        ships.Add(results);
-                        if (results != null) Console.WriteLine($"Shipname: {results["name"]} kostar {results["cost_in_credits"]}");
-                    }
+                    var randomship = rand.Next(1, 10);
+                    var results = ship["results"][randomship];
+                    ships.Add(results);
+                    if (results != null) form.listBox1.Items.Add($"Shipname: {results["name"]} kostar {results["cost_in_credits"]}");
                 }
             }
-            catch (Exception ex)
+            catch (Exception)
             {
-                Console.WriteLine("Ops, något fel hände", ex);
+                form.listBox1.Items.Add("Ops, något fel hände");
             }
             return ships;
-        }
-        public IRestResponse GetPageNumber(int pagenumber)
-        {
-            //"next": "http://swapi.dev/api/starships/?page=2"
-            IRestResponse response = StarWarsApiRequest($"starships/?page={pagenumber}");
-            return response;
         }
     }
 }

@@ -23,7 +23,7 @@ namespace SpaceApp
         {
             Rest starwars = new Rest();
             var results = starwars.Search(textBox1.Text);
-            listBox1.Items.Add(results["name"]);
+            listBox1.Items.Add($"namn: {results["name"]} född: {results["birth_year"]}");
         }
 
         private void Form1_Load(object sender, EventArgs e)
@@ -39,6 +39,7 @@ namespace SpaceApp
 
         private void label1_Click(object sender, EventArgs e)
         {
+            
         }
 
         private void label2_Click(object sender, EventArgs e)
@@ -51,35 +52,10 @@ namespace SpaceApp
 
         }
 
-        public List<dynamic> GetShips()
-        {
-            Rest starwars = new Rest();
-            List<dynamic> pageships = new List<dynamic>();
-            List<dynamic> ships = new List<dynamic>();
-
-            for (var i = 1; i < 5; i++)
-            {
-                IRestResponse response = starwars.StarWarsApiRequest($"starships/?page={i}");
-                var pageship = starwars.Deserialize<dynamic>(response);
-                pageships.Add(pageship);
-            }
-
-            foreach (var ship in pageships)
-            {
-                for (var i = 0; i < ship["results"].Count; i++)
-                {
-                    var results = ship["results"][i];
-                    ships.Add(results);
-                    if (results != null) listBox1.Items.Add($"Shipname: {results["name"]} kostar {results["cost_in_credits"]}");
-                }
-            }
-
-            return ships;
-        }
-
         private void button2_Click_1(object sender, EventArgs e)
         {
-            GetShips();
+            Rest starwars = new Rest();
+            starwars.GetShips(this);
         }
 
         private void label4_Click(object sender, EventArgs e)

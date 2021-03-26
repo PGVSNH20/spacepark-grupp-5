@@ -20,7 +20,7 @@
   </ItemGroup>
 
   <ItemGroup>
-    <ProjectReference Include="..\SpacePark\SpacePark.csproj" />
+    <ProjectReference Include="..\SpaceApp\SpaceApp.csproj" />
   </ItemGroup>
 
 </Project>
