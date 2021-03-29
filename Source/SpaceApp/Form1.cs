@@ -1,5 +1,4 @@
 ﻿using System;
-using System.Collections.Generic;
 using System.Drawing;
 using System.Threading.Tasks;
 using System.Windows.Forms;
@@ -9,12 +8,10 @@ namespace SpaceApp
 {
     public partial class Form1 : Form
     {
-        Form2 frm2;
-
         public Form1()
         {
             InitializeComponent();
-            frm2 = new Form2(this);
+            
         }
 
         private async void button1_Click_1Async(object sender, EventArgs e)
@@ -30,7 +27,8 @@ namespace SpaceApp
                 if (results != null) listbox.Items.Add($"namn: {results["name"]} född: {results["birth_year"]}");
                 await Task.Delay(1000);
                 this.Hide();
-                frm2.ShowForm(results);
+                Form2 form2 = new Form2();
+                form2.ShowForm(results);
                 //Skriv ut från key value
                 //Console.WriteLine($"Namn: {results["name"]}, Födelseår: {results["birth_year"]}, Hårfärg: {results["hair_color"]}");
             }
@@ -46,6 +44,9 @@ namespace SpaceApp
 
         }
 
+
+
+
         private void textBox1_TextChanged(object sender, EventArgs e)
         {
 
@@ -57,7 +58,6 @@ namespace SpaceApp
             var results = await starwars.SearchAsync(textInput.Text);
             SpaceParkContext db = new SpaceParkContext();
             Database.PrintFromDatabase(db, this);
- 
         }
 
         private void label2_Click(object sender, EventArgs e)
@@ -67,11 +67,6 @@ namespace SpaceApp
 
         private void listBox1_SelectedIndexChanged(object sender, EventArgs e)
         {
-        }
-
-        private void background_Click(object sender, EventArgs e)
-        {
-
         }
     }
 

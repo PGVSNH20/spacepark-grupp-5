@@ -1,6 +1,5 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Drawing;
 using System.Threading.Tasks;
 using System.Windows.Forms;
 using SpacePark;
@@ -9,12 +8,10 @@ namespace SpaceApp
 {
     public partial class Form2 : Form
     {
-        Form1 frm1;
         public dynamic Person { get; set; }
-        public Form2(Form1 parent)
+        public Form2()
         {
-            InitializeComponent();
-            frm1 = parent;
+            InitializeComponent();                      
         }
 
         public void ShowForm(dynamic person)
@@ -125,22 +122,6 @@ namespace SpaceApp
         private void ShipIsSelected(object sender, EventArgs e)
         {
             if (listBox.SelectedItem != null) MessageBox.Show($"{listBox.SelectedItem}");
-            ParkButton.Enabled = true;
-            Color green = Color.FromName("GreenYellow");
-            ParkButton.BackColor = green;
-        }
-
-        private void background_Click(object sender, EventArgs e)
-        {
-
-        }
-
-        private void ParkButton_Click(object sender, EventArgs e)
-        {
-            Form1 newform1 = new Form1();
-            frm1 = newform1;
-            frm1.Show();
-            this.Hide();
         }
     }
 
