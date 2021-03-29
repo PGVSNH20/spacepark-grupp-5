@@ -19,34 +19,37 @@ namespace SpaceAppWPF
         private async void Search_Click(object sender, RoutedEventArgs e)
         {
             var person = await StarWarsApi.SearchAsync(inputText.Text);
-            var starShipPage = new StarShipPage();
-            var nav = NavigationService.GetNavigationService(this);
-            await Task.Run(async () =>
+            try
             {
-                await Dispatcher.Invoke(async () =>
+                //json-svaret är i key value pairs
+                var results = person["results"][0];
+                noPark.Visibility = Visibility.Hidden;
+                yesPark.Visibility = Visibility.Visible;
+                if (results != null)
                 {
-                    try
-                    {
-                        //json-svaret är i key value pairs
-                        var results = person["results"][0];
-                        starShipPage.Person = results;
-                        noPark.Visibility = Visibility.Hidden;
-                        yesPark.Visibility = Visibility.Visible;
-                        if (results != null)
-                        {
-                            resultsLabel.Content = $"namn: {results["name"]} född: {results["birth_year"]}";
-                            resultsLabel.Visibility = Visibility.Visible;
-                        }
-                        await Task.Delay(1000);
-                        nav.Navigate(starShipPage);
-                        //Skriv ut från key value
-                        //Console.WriteLine($"Namn: {results["name"]}, Födelseår: {results["birth_year"]}, Hårfärg: {results["hair_color"]}");
-                    }
-                    catch (ArgumentOutOfRangeException)
-                    {
-                        noPark.Visibility = Visibility.Visible;
-                        yesPark.Visibility = Visibility.Hidden;
-                    }
+                    resultsLabel.Content = $"namn: {results["name"]} född: {results["birth_year"]}";
+                    resultsLabel.Visibility = Visibility.Visible;
+                    await Task.Delay(1000);
+                    await NavigateNext(results);
+                }
+                //Skriv ut från key value
+                //Console.WriteLine($"Namn: {results["name"]}, Födelseår: {results["birth_year"]}, Hårfärg: {results["hair_color"]}");
+            }
+            catch (ArgumentOutOfRangeException)
+            {
+                noPark.Visibility = Visibility.Visible;
+                yesPark.Visibility = Visibility.Hidden;
+            }
+        }
+
+        private async Task NavigateNext(dynamic person)
+        {
+            await Task.Run(() => {
+                Dispatcher.Invoke(() => {
+                    var starShipPage = new StarShipPage();
+                    var nav = NavigationService.GetNavigationService(this);
+                    starShipPage.Person = person;
+                    nav.Navigate(starShipPage);
                 });
             });
         }

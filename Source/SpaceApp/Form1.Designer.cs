@@ -37,9 +37,9 @@ namespace SpaceApp
             this.noPark = new System.Windows.Forms.Label();
             this.listbox = new System.Windows.Forms.ListBox();
             this.fillInNameLabel = new System.Windows.Forms.Label();
-            this.welcomeLabel = new System.Windows.Forms.Label();
             this.searchButton = new System.Windows.Forms.Button();
             this.textInput = new System.Windows.Forms.TextBox();
+            this.welcomeLabel = new System.Windows.Forms.Label();
             ((System.ComponentModel.ISupportInitialize)(this.background)).BeginInit();
             this.background.SuspendLayout();
             this.SuspendLayout();
@@ -54,7 +54,6 @@ namespace SpaceApp
             this.background.Controls.Add(this.noPark);
             this.background.Controls.Add(this.listbox);
             this.background.Controls.Add(this.fillInNameLabel);
-            this.background.Controls.Add(this.welcomeLabel);
             this.background.Controls.Add(this.searchButton);
             this.background.Controls.Add(this.textInput);
             this.background.Image = ((System.Drawing.Image)(resources.GetObject("background.Image")));
@@ -101,7 +100,6 @@ namespace SpaceApp
             this.listbox.Name = "listbox";
             this.listbox.Size = new System.Drawing.Size(314, 184);
             this.listbox.TabIndex = 4;
-            this.listbox.SelectedIndexChanged += new System.EventHandler(this.listBox1_SelectedIndexChanged);
             // 
             // fillInNameLabel
             // 
@@ -113,20 +111,6 @@ namespace SpaceApp
             this.fillInNameLabel.Size = new System.Drawing.Size(149, 15);
             this.fillInNameLabel.TabIndex = 3;
             this.fillInNameLabel.Text = "Please fill in your full name";
-            this.fillInNameLabel.Click += new System.EventHandler(this.label2_Click);
-            // 
-            // welcomeLabel
-            // 
-            this.welcomeLabel.AutoSize = true;
-            this.welcomeLabel.BackColor = System.Drawing.Color.Transparent;
-            this.welcomeLabel.Font = new System.Drawing.Font("Microsoft Sans Serif", 24.75F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point);
-            this.welcomeLabel.ForeColor = System.Drawing.Color.Gold;
-            this.welcomeLabel.Location = new System.Drawing.Point(27, 37);
-            this.welcomeLabel.Name = "welcomeLabel";
-            this.welcomeLabel.Size = new System.Drawing.Size(520, 38);
-            this.welcomeLabel.TabIndex = 2;
-            this.welcomeLabel.Text = "WELCOME TO SPACE PARKING";
-            this.welcomeLabel.Click += new System.EventHandler(this.label1_ClickAsync);
             // 
             // searchButton
             // 
@@ -145,7 +129,19 @@ namespace SpaceApp
             this.textInput.Name = "textInput";
             this.textInput.Size = new System.Drawing.Size(296, 23);
             this.textInput.TabIndex = 0;
-            this.textInput.TextChanged += new System.EventHandler(this.textBox1_TextChanged);
+            // 
+            // welcomeLabel
+            // 
+            this.welcomeLabel.AutoSize = true;
+            this.welcomeLabel.BackColor = System.Drawing.Color.Transparent;
+            this.welcomeLabel.Font = new System.Drawing.Font("Microsoft Sans Serif", 24.75F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point);
+            this.welcomeLabel.ForeColor = System.Drawing.Color.Gold;
+            this.welcomeLabel.Location = new System.Drawing.Point(41, 29);
+            this.welcomeLabel.Name = "welcomeLabel";
+            this.welcomeLabel.Size = new System.Drawing.Size(520, 38);
+            this.welcomeLabel.TabIndex = 2;
+            this.welcomeLabel.Text = "WELCOME TO SPACE PARKING";
+            this.welcomeLabel.Click += new System.EventHandler(this.label1_ClickAsync);
             // 
             // Form1
             // 
@@ -155,14 +151,17 @@ namespace SpaceApp
             this.BackgroundImage = ((System.Drawing.Image)(resources.GetObject("$this.BackgroundImage")));
             this.BackgroundImageLayout = System.Windows.Forms.ImageLayout.Stretch;
             this.ClientSize = new System.Drawing.Size(614, 420);
+            this.Controls.Add(this.welcomeLabel);
             this.Controls.Add(this.background);
             this.ForeColor = System.Drawing.SystemColors.ActiveCaptionText;
             this.Name = "Form1";
-            this.Text = "Form1";
+            this.StartPosition = System.Windows.Forms.FormStartPosition.CenterScreen;
+            this.Text = "Space Parking";
             ((System.ComponentModel.ISupportInitialize)(this.background)).EndInit();
             this.background.ResumeLayout(false);
             this.background.PerformLayout();
             this.ResumeLayout(false);
+            this.PerformLayout();
 
         }
 

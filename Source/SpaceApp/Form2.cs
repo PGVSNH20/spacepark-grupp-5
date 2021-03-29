@@ -86,12 +86,6 @@ namespace SpaceApp
                 listBox.Items.Add("Ops, något fel hände");
             }
         }
-
-        private void Form1_Load(object sender, EventArgs e)
-        {
-
-        }
-
         public async Task<List<dynamic>> GetShipsFromSelectedPerson()
         {
             Rest starwars = new Rest();
@@ -109,19 +103,13 @@ namespace SpaceApp
             return shiplist;
         }
 
-        private void listBox1_SelectedIndexChanged(object sender, EventArgs e)
-        {
-
-        }
-
-        private void Form2_Load(object sender, EventArgs e)
-        {
-
-        }
-
-        private void ShipIsSelected(object sender, EventArgs e)
+        private async void ShipIsSelected(object sender, EventArgs e)
         {
             if (listBox.SelectedItem != null) MessageBox.Show($"{listBox.SelectedItem}");
+            ParkingTimerForm timer = new ParkingTimerForm();
+            await Task.Delay(1000);
+            timer.Show();
+            this.Hide();
         }
     }
 
