@@ -6,54 +6,56 @@ namespace SpaceApp
     public partial class ParkingTimerForm : Form
     {
         private DateTime StartTime { get; set; }
-        private DateTime SelectedTime { get; set; }
-        private DateTime CurrentTimeStart { get; set; }
+        private DateTime? SelectedTime { get; set; }
+        private DateTime CurrentTime { get; set; }
+        private int Price { get; set; }
+        public dynamic Person { get; set; }
+        public dynamic StarShip { get; set; }
 
         public ParkingTimerForm()
         {
             InitializeComponent();
-            this.timePicker.CustomFormat = "dd/MM hh:mm";
-            CurrentTimeStart = DateTime.Now;
+            this.timePicker.CustomFormat = "HH:mm";
+            CurrentTime = DateTime.Now;
             currentTimeTimer.Start();
         }
 
-        private void timer1_Tick(object sender, EventArgs e)
-        {
-            int seconds = (int)(DateTime.Now - StartTime).TotalSeconds;
-            timerLabel.Text = seconds.ToString();
-        }
-
-        private void timerButton_Click(object sender, EventArgs e)
-        {
-            if (timer.Enabled == true)
-            { 
-                timer.Stop();
-                timer.Enabled = false;
-                timerButton.Text = "Start";
-                timerLabel.Visible = false;
-                listbox.Items.Add(timerLabel.Text);
-            }
-            else if (timer.Enabled == false)
-            {
-                timer.Enabled = true;
-                timer.Start();
-                StartTime = DateTime.Now;
-                timerButton.Text = "Stop";
-                timerLabel.Visible = true;
-            }
-        }
-
+        //klickat på parkera knappen
         private void timeIsPicked(object sender, EventArgs e)
         {
             SelectedTime = timePicker.Value;
+            StartTime = CurrentTime;
+            listbox.Items.Add($"Started parking: {StartTime.ToShortTimeString()} Stopping: {SelectedTime.Value.ToShortTimeString()}");
         }
 
-        //Körs efter 10ms
+        //timer där 5 minuter passerar varje sekund
         private void currentTimeChange(object sender, EventArgs e)
         {
-            var second = CurrentTimeStart.AddSeconds(1);
-            CurrentTimeStart = second;
-            currentTime.Text = CurrentTimeStart.ToShortTimeString();
+            var second = CurrentTime.AddMinutes(1);
+            CurrentTime = second;
+            currentTime.Text = CurrentTime.ToShortTimeString();
+            if (SelectedTime != null)
+            {
+                CheckIfParkingIsOver();
+            }
+        }
+
+        private void CalculatePrice(int time)
+        {
+            // kostar 5 credits i minuten
+            Price = time * 5;
+        }
+
+        //kolla om valda tiden är samma som "nuvarande" tiden
+        private void CheckIfParkingIsOver()
+        {
+            if (SelectedTime.Value.ToShortTimeString() == CurrentTime.ToShortTimeString())
+            {
+                int parkedTimeInMinutes = (CurrentTime - StartTime).Minutes;
+                CalculatePrice(parkedTimeInMinutes);
+                listbox.Items.Add($"You parked for: {parkedTimeInMinutes} Minutes and it cost:{Price} credits");
+                SelectedTime = null;
+            }
         }
     }
 }
