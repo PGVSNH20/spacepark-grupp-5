@@ -73,7 +73,6 @@ namespace SpaceApp
             this.listBox.Size = new System.Drawing.Size(314, 184);
             this.listBox.TabIndex = 4;
             this.listBox.Click += new System.EventHandler(this.ShipIsSelected);
-            this.listBox.SelectedIndexChanged += new System.EventHandler(this.listBox1_SelectedIndexChanged);
             // 
             // allButton
             // 
@@ -116,6 +115,7 @@ namespace SpaceApp
             this.Controls.Add(this.background);
             this.ForeColor = System.Drawing.SystemColors.ActiveCaptionText;
             this.Name = "Form2";
+            this.StartPosition = System.Windows.Forms.FormStartPosition.CenterScreen;
             this.Text = "Select a starship";
             ((System.ComponentModel.ISupportInitialize)(this.background)).EndInit();
             this.ResumeLayout(false);

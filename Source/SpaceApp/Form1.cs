@@ -38,35 +38,12 @@ namespace SpaceApp
                 yesPark.Visible = false;
             }
         }
-
-        private void Form1_Load(object sender, EventArgs e)
-        {
-
-        }
-
-
-
-
-        private void textBox1_TextChanged(object sender, EventArgs e)
-        {
-
-        }
-
         private async void label1_ClickAsync(object sender, EventArgs e)
         {
             Rest starwars = new Rest();
             var results = await starwars.SearchAsync(textInput.Text);
             SpaceParkContext db = new SpaceParkContext();
             Database.PrintFromDatabase(db, this);
-        }
-
-        private void label2_Click(object sender, EventArgs e)
-        {
-
-        }
-
-        private void listBox1_SelectedIndexChanged(object sender, EventArgs e)
-        {
         }
     }
 
