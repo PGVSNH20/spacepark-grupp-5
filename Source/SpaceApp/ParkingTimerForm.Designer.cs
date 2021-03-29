@@ -36,6 +36,10 @@ namespace SpaceApp
             this.timer = new System.Windows.Forms.Timer(this.components);
             this.timerButton = new System.Windows.Forms.Button();
             this.timerLabel = new System.Windows.Forms.Label();
+            this.timePicker = new System.Windows.Forms.DateTimePicker();
+            this.currentTime = new System.Windows.Forms.Label();
+            this.currentTimeLabel = new System.Windows.Forms.Label();
+            this.currentTimeTimer = new System.Windows.Forms.Timer(this.components);
             ((System.ComponentModel.ISupportInitialize)(this.background)).BeginInit();
             this.background.SuspendLayout();
             this.SuspendLayout();
@@ -89,18 +93,59 @@ namespace SpaceApp
             this.timerLabel.BackColor = System.Drawing.Color.Black;
             this.timerLabel.Font = new System.Drawing.Font("Segoe UI", 22F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point);
             this.timerLabel.ForeColor = System.Drawing.SystemColors.ButtonHighlight;
-            this.timerLabel.Location = new System.Drawing.Point(217, 90);
+            this.timerLabel.Location = new System.Drawing.Point(196, 90);
             this.timerLabel.Name = "timerLabel";
             this.timerLabel.Size = new System.Drawing.Size(34, 41);
             this.timerLabel.TabIndex = 11;
             this.timerLabel.Text = "0";
             this.timerLabel.Visible = false;
             // 
+            // timePicker
+            // 
+            this.timePicker.Format = System.Windows.Forms.DateTimePickerFormat.Custom;
+            this.timePicker.Location = new System.Drawing.Point(247, 104);
+            this.timePicker.Name = "timePicker";
+            this.timePicker.Size = new System.Drawing.Size(85, 23);
+            this.timePicker.TabIndex = 12;
+            this.timePicker.ValueChanged += new System.EventHandler(this.timeIsPicked);
+            // 
+            // currentTime
+            // 
+            this.currentTime.AutoSize = true;
+            this.currentTime.BackColor = System.Drawing.Color.Black;
+            this.currentTime.Font = new System.Drawing.Font("Segoe UI", 16F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point);
+            this.currentTime.ForeColor = System.Drawing.SystemColors.ButtonHighlight;
+            this.currentTime.Location = new System.Drawing.Point(275, 31);
+            this.currentTime.Name = "currentTime";
+            this.currentTime.Size = new System.Drawing.Size(25, 30);
+            this.currentTime.TabIndex = 13;
+            this.currentTime.Text = "0";
+            // 
+            // currentTimeLabel
+            // 
+            this.currentTimeLabel.AutoSize = true;
+            this.currentTimeLabel.BackColor = System.Drawing.Color.Black;
+            this.currentTimeLabel.Font = new System.Drawing.Font("Segoe UI", 16F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point);
+            this.currentTimeLabel.ForeColor = System.Drawing.SystemColors.ButtonHighlight;
+            this.currentTimeLabel.Location = new System.Drawing.Point(133, 31);
+            this.currentTimeLabel.Name = "currentTimeLabel";
+            this.currentTimeLabel.Size = new System.Drawing.Size(136, 30);
+            this.currentTimeLabel.TabIndex = 14;
+            this.currentTimeLabel.Text = "current time:";
+            // 
+            // currentTimeTimer
+            // 
+            this.currentTimeTimer.Interval = 10;
+            this.currentTimeTimer.Tick += new System.EventHandler(this.currentTimeChange);
+            // 
             // ParkingTimerForm
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(7F, 15F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.ClientSize = new System.Drawing.Size(614, 420);
+            this.Controls.Add(this.currentTimeLabel);
+            this.Controls.Add(this.currentTime);
+            this.Controls.Add(this.timePicker);
             this.Controls.Add(this.timerLabel);
             this.Controls.Add(this.timerButton);
             this.Controls.Add(this.background);
@@ -121,5 +166,9 @@ namespace SpaceApp
         private System.Windows.Forms.Timer timer;
         private System.Windows.Forms.Button timerButton;
         private System.Windows.Forms.Label timerLabel;
+        private System.Windows.Forms.DateTimePicker timePicker;
+        private System.Windows.Forms.Label currentTime;
+        private System.Windows.Forms.Label currentTimeLabel;
+        private System.Windows.Forms.Timer currentTimeTimer;
     }
 }
