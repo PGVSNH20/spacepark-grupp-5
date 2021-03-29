@@ -35,6 +35,7 @@ namespace SpaceApp
             this.listBox = new System.Windows.Forms.ListBox();
             this.allButton = new System.Windows.Forms.Button();
             this.background = new System.Windows.Forms.PictureBox();
+            this.ParkButton = new System.Windows.Forms.Button();
             ((System.ComponentModel.ISupportInitialize)(this.background)).BeginInit();
             this.SuspendLayout();
             // 
@@ -42,9 +43,10 @@ namespace SpaceApp
             // 
             this.showButton.BackColor = System.Drawing.Color.Yellow;
             this.showButton.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
-            this.showButton.Location = new System.Drawing.Point(145, 84);
+            this.showButton.Location = new System.Drawing.Point(166, 112);
+            this.showButton.Margin = new System.Windows.Forms.Padding(3, 4, 3, 4);
             this.showButton.Name = "showButton";
-            this.showButton.Size = new System.Drawing.Size(150, 24);
+            this.showButton.Size = new System.Drawing.Size(171, 32);
             this.showButton.TabIndex = 1;
             this.showButton.Text = "SHOW MY STARSHIPS";
             this.showButton.UseVisualStyleBackColor = false;
@@ -56,9 +58,9 @@ namespace SpaceApp
             this.selectLabel.BackColor = System.Drawing.Color.Transparent;
             this.selectLabel.Font = new System.Drawing.Font("Microsoft Sans Serif", 24.75F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point);
             this.selectLabel.ForeColor = System.Drawing.Color.Gold;
-            this.selectLabel.Location = new System.Drawing.Point(27, 37);
+            this.selectLabel.Location = new System.Drawing.Point(31, 49);
             this.selectLabel.Name = "selectLabel";
-            this.selectLabel.Size = new System.Drawing.Size(472, 38);
+            this.selectLabel.Size = new System.Drawing.Size(599, 48);
             this.selectLabel.TabIndex = 2;
             this.selectLabel.Text = "SELECT STARSHIP TO PARK";
             // 
@@ -67,10 +69,11 @@ namespace SpaceApp
             this.listBox.BackColor = System.Drawing.SystemColors.WindowText;
             this.listBox.ForeColor = System.Drawing.Color.Gold;
             this.listBox.FormattingEnabled = true;
-            this.listBox.ItemHeight = 15;
-            this.listBox.Location = new System.Drawing.Point(145, 127);
+            this.listBox.ItemHeight = 20;
+            this.listBox.Location = new System.Drawing.Point(166, 152);
+            this.listBox.Margin = new System.Windows.Forms.Padding(3, 4, 3, 4);
             this.listBox.Name = "listBox";
-            this.listBox.Size = new System.Drawing.Size(314, 184);
+            this.listBox.Size = new System.Drawing.Size(358, 244);
             this.listBox.TabIndex = 4;
             this.listBox.Click += new System.EventHandler(this.ShipIsSelected);
             this.listBox.SelectedIndexChanged += new System.EventHandler(this.listBox1_SelectedIndexChanged);
@@ -79,9 +82,10 @@ namespace SpaceApp
             // 
             this.allButton.BackColor = System.Drawing.Color.Yellow;
             this.allButton.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
-            this.allButton.Location = new System.Drawing.Point(314, 84);
+            this.allButton.Location = new System.Drawing.Point(359, 112);
+            this.allButton.Margin = new System.Windows.Forms.Padding(3, 4, 3, 4);
             this.allButton.Name = "allButton";
-            this.allButton.Size = new System.Drawing.Size(145, 23);
+            this.allButton.Size = new System.Drawing.Size(166, 31);
             this.allButton.TabIndex = 5;
             this.allButton.Text = "SHOW ALL STARSHIPS";
             this.allButton.UseVisualStyleBackColor = false;
@@ -94,27 +98,45 @@ namespace SpaceApp
             | System.Windows.Forms.AnchorStyles.Right)));
             this.background.BackgroundImageLayout = System.Windows.Forms.ImageLayout.None;
             this.background.Image = ((System.Drawing.Image)(resources.GetObject("background.Image")));
-            this.background.Location = new System.Drawing.Point(-11, -9);
+            this.background.Location = new System.Drawing.Point(-13, -12);
+            this.background.Margin = new System.Windows.Forms.Padding(3, 4, 3, 4);
             this.background.Name = "background";
-            this.background.Size = new System.Drawing.Size(639, 390);
+            this.background.Size = new System.Drawing.Size(730, 520);
             this.background.SizeMode = System.Windows.Forms.PictureBoxSizeMode.StretchImage;
             this.background.TabIndex = 8;
             this.background.TabStop = false;
+            this.background.Click += new System.EventHandler(this.background_Click);
+            // 
+            // ParkButton
+            // 
+            this.ParkButton.BackColor = System.Drawing.Color.DarkGray;
+            this.ParkButton.Enabled = false;
+            this.ParkButton.FlatAppearance.BorderSize = 0;
+            this.ParkButton.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
+            this.ParkButton.Location = new System.Drawing.Point(458, 403);
+            this.ParkButton.Name = "ParkButton";
+            this.ParkButton.Size = new System.Drawing.Size(67, 32);
+            this.ParkButton.TabIndex = 9;
+            this.ParkButton.Text = "PARK";
+            this.ParkButton.UseVisualStyleBackColor = false;
+            this.ParkButton.Click += new System.EventHandler(this.ParkButton_Click);
             // 
             // Form2
             // 
-            this.AutoScaleDimensions = new System.Drawing.SizeF(7F, 15F);
+            this.AutoScaleDimensions = new System.Drawing.SizeF(8F, 20F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.BackColor = System.Drawing.SystemColors.ButtonFace;
             this.BackgroundImage = ((System.Drawing.Image)(resources.GetObject("$this.BackgroundImage")));
             this.BackgroundImageLayout = System.Windows.Forms.ImageLayout.Stretch;
-            this.ClientSize = new System.Drawing.Size(614, 368);
+            this.ClientSize = new System.Drawing.Size(702, 491);
+            this.Controls.Add(this.ParkButton);
             this.Controls.Add(this.allButton);
             this.Controls.Add(this.listBox);
             this.Controls.Add(this.selectLabel);
             this.Controls.Add(this.showButton);
             this.Controls.Add(this.background);
             this.ForeColor = System.Drawing.SystemColors.ActiveCaptionText;
+            this.Margin = new System.Windows.Forms.Padding(3, 4, 3, 4);
             this.Name = "Form2";
             this.Text = "Select a starship";
             ((System.ComponentModel.ISupportInitialize)(this.background)).EndInit();
@@ -129,6 +151,7 @@ namespace SpaceApp
         public System.Windows.Forms.ListBox listBox;
         private System.Windows.Forms.Button allButton;
         private System.Windows.Forms.PictureBox background;
+        private System.Windows.Forms.Button ParkButton;
     }
 }
 
