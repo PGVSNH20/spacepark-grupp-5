@@ -26,11 +26,15 @@ namespace SpaceApp
             var list = await GetShipsFromSelectedPerson();
             foreach (var ship in list)
             {
-                listBox1.Items.Add($"{Person["name"]} äger skeppet {ship["name"]}");
+                listBox.Items.Add($"{Person["name"]} äger skeppet {ship["name"]}");
             }
         }
+        private void button2_Click(object sender, EventArgs e)
+        {
+            GetAllShipsAsync();
+        }
 
-        public async Task<List<dynamic>> GetShipsAsync()
+        public async Task<List<dynamic>> GetRandomShipsAsync()
         {
             List<dynamic> ships = new List<dynamic>();
             Rest starwars = new Rest();
@@ -48,22 +52,42 @@ namespace SpaceApp
                     var randomship = rand.Next(1, 10);
                     var results = ship["results"][randomship];
                     ships.Add(results);
-                    if (results != null) listBox1.Items.Add($"Shipname: {results["name"]} kostar {results["cost_in_credits"]}");
+                    if (results != null) listBox.Items.Add($"Shipname: {results["name"]} kostar {results["cost_in_credits"]}");
                 }
             }
             catch (Exception)
             {
-                listBox1.Items.Add("Ops, något fel hände");
+                listBox.Items.Add("Ops, något fel hände");
             }
             return ships;
         }
 
-        private void Form1_Load(object sender, EventArgs e)
+        public async void GetAllShipsAsync()
         {
+            try
+            {
+                Rest starwars = new Rest();
+                //hämta 5 sidor med starships
+                for (var i = 1; i < 5; i++)
+                {
+                    var response = await starwars.StarWarsApiRequestAsync($"starships/?page={i}");
+                    var ship = starwars.Deserialize<dynamic>(response);
 
+                    //Skriv ut hela sidan med skepp
+                    for (var j = 0; j < ship["results"].Count; j++)
+                    {
+                        var results = ship["results"][j];
+                        if (results != null) listBox.Items.Add($"{results["name"]}      cost: {results["cost_in_credits"]}");
+                    }
+                }
+            } 
+            catch (Exception)
+            {
+                listBox.Items.Add("Ops, något fel hände");
+            }
         }
 
-        private async void label1_ClickAsync(object sender, EventArgs e)
+        private void Form1_Load(object sender, EventArgs e)
         {
 
         }
@@ -85,14 +109,19 @@ namespace SpaceApp
             return shiplist;
         }
 
-        private void button2_Click(object sender, EventArgs e)
+        private void listBox1_SelectedIndexChanged(object sender, EventArgs e)
         {
 
         }
 
-        private void listBox1_SelectedIndexChanged(object sender, EventArgs e)
+        private void Form2_Load(object sender, EventArgs e)
         {
 
+        }
+
+        private void ShipIsSelected(object sender, EventArgs e)
+        {
+            if (listBox.SelectedItem != null) MessageBox.Show($"{listBox.SelectedItem}");
         }
     }
 

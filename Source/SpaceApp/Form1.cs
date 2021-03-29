@@ -17,14 +17,14 @@ namespace SpaceApp
         private async void button1_Click_1Async(object sender, EventArgs e)
         {
             Rest starwars = new Rest();
-            var person = await starwars.SearchAsync(textBox1.Text);
+            var person = await starwars.SearchAsync(textInput.Text);
             try
             {
                 //json-svaret är i key value pairs
                 var results = person["results"][0];
                 yesPark.Visible = true;
                 noPark.Visible = false;
-                if (results != null) listBox1.Items.Add($"namn: {results["name"]} född: {results["birth_year"]}");
+                if (results != null) listbox.Items.Add($"namn: {results["name"]} född: {results["birth_year"]}");
                 await Task.Delay(1000);
                 this.Hide();
                 Form2 form2 = new Form2();
@@ -55,7 +55,7 @@ namespace SpaceApp
         private async void label1_ClickAsync(object sender, EventArgs e)
         {
             Rest starwars = new Rest();
-            var results = await starwars.SearchAsync(textBox1.Text);
+            var results = await starwars.SearchAsync(textInput.Text);
             SpaceParkContext db = new SpaceParkContext();
             Database.PrintFromDatabase(db, this);
         }

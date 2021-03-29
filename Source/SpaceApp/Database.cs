@@ -55,11 +55,11 @@ namespace SpacePark
         {
             db.Database.EnsureCreated();
             var noQueryList = db.ParkEvent.AsQueryable();
-            form.listBox1.Items.Add("Parkeringar som gjorts hitills: ");
+            form.listbox.Items.Add("Parkeringar som gjorts hitills: ");
             foreach (var query in noQueryList)
             {
                 query.StarShip = db.StarShip.Find(query.StarShipId);
-                form.listBox1.Items.Add($"{query.FirstName} {query.LastName} parkerade i {query.Time} med skeppet \"{query.StarShip.StarShipName}\" och det kostade {query.Price} credits\n");
+                form.listbox.Items.Add($"{query.FirstName} {query.LastName} parkerade i {query.Time} med skeppet \"{query.StarShip.StarShipName}\" och det kostade {query.Price} credits\n");
             }
         }
     }

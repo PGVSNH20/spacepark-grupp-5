@@ -1,0 +1,23 @@
+﻿<Page x:Class="SpaceAppWPF.ParkTimer"
+      xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+      xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+      xmlns:gif="http://wpfanimatedgif.codeplex.com"
+      xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
+      xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
+      xmlns:local="clr-namespace:SpaceAppWPF"
+      mc:Ignorable="d" 
+      d:DesignHeight="450" d:DesignWidth="800"
+      Title="ParkTimer">
+
+    <Grid>
+        <Image x:Name="background" gif:ImageBehavior.AnimatedSource="Resources/StarfieldSimulation.gif" gif:ImageBehavior.RepeatBehavior="Forever" gif:ImageBehavior.AutoStart="True" Stretch="UniformToFill"/>
+        <Label x:Name="Timer1Text" Content="0" HorizontalAlignment="Left" Margin="138,159,0,0" VerticalAlignment="Top" Foreground="#FFC3C300" FontSize="20" Visibility="Hidden"/>
+        <Label x:Name="Timer2Text" Content="Timer2Text" HorizontalAlignment="Left" Margin="262,159,0,0" VerticalAlignment="Top" Foreground="#FFC3C300" FontSize="20" Visibility="Hidden"/>
+        <Button x:Name="startButton" Content="Start" HorizontalAlignment="Left" Margin="164,235,0,0" VerticalAlignment="Top" Height="28" Foreground="#FFC3C300" Width="54" Background="#00DDDDDD" BorderBrush="#FFC3C300" UseLayoutRounding="False" Cursor="Hand" Click="TimerStart"/>
+        <Button x:Name="stopButton" Content="Stop" HorizontalAlignment="Left" Margin="358,235,0,0" VerticalAlignment="Top" Height="28" Foreground="#FFC3C300" Width="54" Background="#00DDDDDD" BorderBrush="#FFC3C300" UseLayoutRounding="False" Cursor="Hand" Click="TimerStop"/>
+        <ListBox x:Name="listBox" Margin="168,290,390,0" Background="Transparent" BorderBrush="#FFC3C300" Foreground="#FFC3C300" />
+        <Button x:Name="resetButton" Content="Reset" HorizontalAlignment="Left" Margin="262,235,0,0" VerticalAlignment="Top" Height="28" Foreground="#FFC3C300" Width="54" Background="#00DDDDDD" BorderBrush="#FFC3C300" UseLayoutRounding="False" Cursor="Hand" Click="TimerReset"/>
+        <Label x:Name="Timer3Text" Content="Timer3Text" HorizontalAlignment="Left" Margin="262,117,0,0" VerticalAlignment="Top" Foreground="#FFC3C300" FontSize="20" Visibility="Hidden"/>
+        <Label x:Name="Timer4Text" Content="Timer4Text" HorizontalAlignment="Left" Margin="138,117,0,0" VerticalAlignment="Top" Foreground="#FFC3C300" FontSize="20" Visibility="Hidden"/>
+    </Grid>
+</Page>

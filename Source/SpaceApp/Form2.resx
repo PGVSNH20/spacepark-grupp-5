@@ -58,7 +58,7 @@
     <value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </resheader>
   <assembly alias="System.Drawing.Common" name="System.Drawing.Common, Version=4.0.2.2, Culture=neutral, PublicKeyToken=cc7b13ffcd2ddd51" />
-  <data name="pictureBox1.Image" type="System.Drawing.Bitmap, System.Drawing.Common" mimetype="application/x-microsoft.net.object.bytearray.base64">
+  <data name="background.Image" type="System.Drawing.Bitmap, System.Drawing.Common" mimetype="application/x-microsoft.net.object.bytearray.base64">
     <value>
         R0lGODlh9AGQAfIAAAAAACQkJEhISG1tbZGRkba2ttra2v///yH/C05FVFNDQVBFMi4wAwEAAAAh+QQA
         AwAAACwAAAAA9AGQAQAD/gi63P4wykmrvdiFzLv/zbCBZGmeaKqubOu+cCzPdG2D463vVs7/wKCQ5RtS
