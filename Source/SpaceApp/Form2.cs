@@ -106,20 +106,20 @@ namespace SpaceApp
             return shiplist;
         }
 
-        private async void ShipIsSelected(object sender, EventArgs e)
+        private void ShipIsSelected(object sender, EventArgs e)
+        {
+            Color green = Color.FromName("greenyellow");
+            SelectShip.Enabled = true;
+            SelectShip.BackColor = green;          
+        }
+
+        private async void button1_Click(object sender, EventArgs e)
         {
             if (listBox.SelectedItem != null) MessageBox.Show($"{listBox.SelectedItem}");
             ParkingTimerForm timer = new ParkingTimerForm();
             await Task.Delay(1000);
             timer.Show();
             this.Hide();
-        }
-
-        private void button1_Click(object sender, EventArgs e)
-        {
-            Color green = Color.FromName("greenyellow");
-            SelectShip.Enabled = true;
-            SelectShip.BackColor = green;
         }
 
         private void listBox_SelectedIndexChanged(object sender, EventArgs e)

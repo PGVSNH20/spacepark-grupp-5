@@ -120,7 +120,7 @@ namespace SpaceApp
             this.searchButton.Location = new System.Drawing.Point(483, 143);
             this.searchButton.Margin = new System.Windows.Forms.Padding(3, 4, 3, 4);
             this.searchButton.Name = "searchButton";
-            this.searchButton.Size = new System.Drawing.Size(87, 32);
+            this.searchButton.Size = new System.Drawing.Size(87, 27);
             this.searchButton.TabIndex = 1;
             this.searchButton.Text = "SEARCH";
             this.searchButton.UseVisualStyleBackColor = true;

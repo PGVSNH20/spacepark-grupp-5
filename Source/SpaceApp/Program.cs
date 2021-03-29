@@ -14,7 +14,8 @@ namespace SpaceApp
             Application.SetHighDpiMode(HighDpiMode.SystemAware);
             Application.EnableVisualStyles();
             Application.SetCompatibleTextRenderingDefault(false);
-            Application.Run(new ParkingTimerForm());
+            Application.Run(new Form1());
+            //Application.Run(new ParkingTimerForm());
         }
     }
 }
