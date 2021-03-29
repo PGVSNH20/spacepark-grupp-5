@@ -1,5 +1,7 @@
 ﻿using System;
+using System.Threading.Tasks;
 using System.Windows.Forms;
+using SpacePark;
 
 namespace SpaceApp
 {
@@ -11,13 +13,24 @@ namespace SpaceApp
         private int Price { get; set; }
         public dynamic Person { get; set; }
         public dynamic StarShip { get; set; }
+        public Form2 form2 { get; set; }
 
-        public ParkingTimerForm()
+        public ParkingTimerForm(Form2 parent)
         {
             InitializeComponent();
+            form2 = parent;
+        }
+
+        public void ShowForm(dynamic person, dynamic starShip)
+        {
+            Person = person;
+            StarShip = starShip;
             this.timePicker.CustomFormat = "HH:mm";
             CurrentTime = DateTime.Now;
+            nameLabel.Text = $"name: {person["name"]}";
+            shipLabel.Text = $"starship: {starShip["name"]}";
             currentTimeTimer.Start();
+            this.Show();
         }
 
         //klickat på parkera knappen
@@ -25,6 +38,7 @@ namespace SpaceApp
         {
             SelectedTime = timePicker.Value;
             StartTime = CurrentTime;
+            listbox.Items.Clear();
             listbox.Items.Add($"Started parking: {StartTime.ToShortTimeString()} Stopping: {SelectedTime.Value.ToShortTimeString()}");
         }
 
@@ -51,11 +65,34 @@ namespace SpaceApp
         {
             if (SelectedTime.Value.ToShortTimeString() == CurrentTime.ToShortTimeString())
             {
-                int parkedTimeInMinutes = (CurrentTime - StartTime).Minutes;
-                CalculatePrice(parkedTimeInMinutes);
-                listbox.Items.Add($"You parked for: {parkedTimeInMinutes} Minutes and it cost:{Price} credits");
+                int parkedTime = (CurrentTime - StartTime).Minutes;
+                CalculatePrice(parkedTime);
+                listbox.Items.Add($"");
+                listbox.Items.Add($"{Person["name"]} parked with {StarShip["name"]} for: {parkedTime} min and it cost:{Price} credits");
+                Database.StoreParking(Person, StarShip, parkedTime, Price);
                 SelectedTime = null;
             }
+        }
+
+        //kolla historik från databas
+        private void dbButton_Click(object sender, EventArgs e)
+        {
+            SpaceParkContext db = new SpaceParkContext();
+            var queryList = db.ParkEvent.AsQueryable();
+            listbox.Items.Clear();
+            listbox.Items.Add("History: ");
+            foreach (var query in queryList)
+            {
+                query.Person = db.Person.Find(query.PersonId);
+                query.StarShip = db.StarShip.Find(query.StarShipId);
+                listbox.Items.Add($"{query.Person.Name} parked for {query.TimeParked} min with the ship \"{query.StarShip.StarShipName}\", it cost {query.Price} credits");
+            }
+        }
+
+        private void GoBack(object sender, EventArgs e)
+        {
+            this.Hide();
+            form2.Show();
         }
     }
 }

@@ -1,66 +1,62 @@
 ﻿using System;
-using SpaceApp;
+using System.Threading.Tasks;
 
 namespace SpacePark
 {
     public class Database
     {
-        public static string StoreInDatabase(dynamic results)
+        private static async Task StorePersonInDatabase(dynamic person, int personId)
         {
-            //Ser till att databasen är skapad
-            var db = new SpaceParkContext();
+            //lägg till om den inte finns
+            await Task.Run(() => {
+                SpaceParkContext db = new SpaceParkContext();
+                var personQuery = db.Person.Find(personId);
+                if (personQuery == null)
+                {
+                    var Person = new Person() { Name = person["name"], PersonId = personId };
+                    db.Person.Add(Person);
+                    db.SaveChanges();
+                }
+            });
+        }
+
+        private static async Task StoreStarShipInDatabase(dynamic starship, int starshipId)
+        {
+            //lägg till om den inte finns
+            await Task.Run(() => {
+                SpaceParkContext db = new SpaceParkContext();
+                var starShipQuery = db.StarShip.Find(starshipId);
+                if (starShipQuery == null)
+                {
+                    StarShip starShip = new StarShip() { StarShipName = starship["name"], StarShipId = starshipId };
+                    db.StarShip.Add(starShip);
+                    db.SaveChanges();
+                }
+            });
+        }
+
+        public static async void StoreParking(dynamic person, dynamic starship, int time, int price)
+        {
+            SpaceParkContext db = new SpaceParkContext();
             db.Database.EnsureCreated();
 
-            //Lägger till ett skepp för testsyften
-            AddMilleniumFalconToDatabase(db);
-            var starship = db.StarShip.Find(1);
+            //primary key blir till siffran från swapi url
+            var starshipId = Int32.Parse(starship["url"].Remove(0, 31).Trim('/'));
+            var personId = Int32.Parse(person["url"].Remove(0, 28).Trim('/'));
 
-            //Add-Migration SpaceApp
-            //Update-Database
+            Task persontask = StorePersonInDatabase(person, personId);
+            Task starshiptask = StoreStarShipInDatabase(starship, starshipId);
 
-
-            var person = new ParkEvent()
-            {
-                FirstName = results["name"],
-                Price = 42m,
-                StarShipId = 1,
-                Time = "1h 32m"
+            var park = new ParkEvent() {
+                StarShipId = starshipId,
+                PersonId = personId,
+                TimeParked = time.ToString(),
+                Price = price
             };
+            db.ParkEvent.Add(park);
 
-            db.Add(person);
+            await Task.WhenAll(persontask, starshiptask);
             db.SaveChanges();
-
-            return ($"{person.FirstName} har parkerat med {starship.StarShipName} i {person.Time} och får betala {person.Price} credits");
-        }
-
-        public static void InputCreationTestWithApi()
-        {
-            Rest starwars = new Rest();
-           // var results = starwars.Search("luke", this);
-
-           // StoreInDatabase(results);
-        }
-
-        public static void AddMilleniumFalconToDatabase(SpaceParkContext db)
-        {
-            if (db.StarShip.Find(1) == null)
-            {
-                StarShip starShip = new StarShip() { StarShipId = 1, StarShipName = "Millenium Falcon" };
-                db.Add(starShip);
-                db.SaveChanges();
-            }
-        }
-
-        public static void PrintFromDatabase(SpaceParkContext db, Form1 form)
-        {
-            db.Database.EnsureCreated();
-            var noQueryList = db.ParkEvent.AsQueryable();
-            form.listbox.Items.Add("Parkeringar som gjorts hitills: ");
-            foreach (var query in noQueryList)
-            {
-                query.StarShip = db.StarShip.Find(query.StarShipId);
-                form.listbox.Items.Add($"{query.FirstName} {query.LastName} parkerade i {query.Time} med skeppet \"{query.StarShip.StarShipName}\" och det kostade {query.Price} credits\n");
-            }
         }
     }
 }

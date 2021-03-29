@@ -1,5 +1,4 @@
 ﻿using System;
-using System.Drawing;
 using System.Threading.Tasks;
 using System.Windows.Forms;
 using SpacePark;
@@ -25,37 +24,21 @@ namespace SpaceApp
                 var results = person["results"][0];
                 yesPark.Visible = true;
                 noPark.Visible = false;
-                if (results != null) listbox.Items.Add($"namn: {results["name"]} född: {results["birth_year"]}");
-                await Task.Delay(1000);
+                if (results != null)
+                {
+                    nameLabel.Visible = true;
+                    nameLabel.Text = $"name: {results["name"]}, id: {results["birth_year"]}";
+                }
+                    await Task.Delay(1000);
                 this.Hide();
                 form2.ShowForm(results);
-                //Skriv ut från key value
-                //Console.WriteLine($"Namn: {results["name"]}, Födelseår: {results["birth_year"]}, Hårfärg: {results["hair_color"]}");
             }
             catch (ArgumentOutOfRangeException)
             {
+                nameLabel.Visible = false;
                 noPark.Visible = true;
                 yesPark.Visible = false;
             }
         }
-        private async void label1_ClickAsync(object sender, EventArgs e)
-        {
-            Rest starwars = new Rest();
-            var results = await starwars.SearchAsync(textInput.Text);
-            SpaceParkContext db = new SpaceParkContext();
-            Database.PrintFromDatabase(db, this);
-        }
-
-        private void listbox_SelectedIndexChanged(object sender, EventArgs e)
-        {
-
-        }
     }
-
-    /*public class RundKnapp : Button
-    {
-        GraphicsPath p = new GraphicsPath();
-        p.AddEllipse(1, 1, this.width - 4, this.width - 4);
-        this.region = new Region(p);
-    }*/
 }

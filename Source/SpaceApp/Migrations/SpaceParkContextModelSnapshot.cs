@@ -4,7 +4,7 @@ using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 using SpacePark;
 
-namespace SpacePark.Migrations
+namespace SpaceApp.Migrations
 {
     [DbContext(typeof(SpaceParkContext))]
     partial class SpaceParkContextModelSnapshot : ModelSnapshot
@@ -21,11 +21,8 @@ namespace SpacePark.Migrations
                         .ValueGeneratedOnAdd()
                         .HasColumnType("INTEGER");
 
-                    b.Property<string>("FirstName")
-                        .HasColumnType("TEXT");
-
-                    b.Property<string>("LastName")
-                        .HasColumnType("TEXT");
+                    b.Property<int>("PersonId")
+                        .HasColumnType("INTEGER");
 
                     b.Property<decimal>("Price")
                         .HasColumnType("TEXT");
@@ -33,14 +30,30 @@ namespace SpacePark.Migrations
                     b.Property<int>("StarShipId")
                         .HasColumnType("INTEGER");
 
-                    b.Property<string>("Time")
+                    b.Property<string>("TimeParked")
                         .HasColumnType("TEXT");
 
                     b.HasKey("ParkEventId");
 
+                    b.HasIndex("PersonId");
+
                     b.HasIndex("StarShipId");
 
                     b.ToTable("ParkEvent");
+                });
+
+            modelBuilder.Entity("SpacePark.Person", b =>
+                {
+                    b.Property<int>("PersonId")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("INTEGER");
+
+                    b.Property<string>("Name")
+                        .HasColumnType("TEXT");
+
+                    b.HasKey("PersonId");
+
+                    b.ToTable("Person");
                 });
 
             modelBuilder.Entity("SpacePark.StarShip", b =>
@@ -59,11 +72,19 @@ namespace SpacePark.Migrations
 
             modelBuilder.Entity("SpacePark.ParkEvent", b =>
                 {
+                    b.HasOne("SpacePark.Person", "Person")
+                        .WithMany()
+                        .HasForeignKey("PersonId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
                     b.HasOne("SpacePark.StarShip", "StarShip")
                         .WithMany()
                         .HasForeignKey("StarShipId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
+
+                    b.Navigation("Person");
 
                     b.Navigation("StarShip");
                 });

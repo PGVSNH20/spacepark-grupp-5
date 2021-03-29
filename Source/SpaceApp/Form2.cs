@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Drawing;
+using System.Linq;
 using System.Threading.Tasks;
 using System.Windows.Forms;
 using SpacePark;
@@ -10,10 +11,13 @@ namespace SpaceApp
     public partial class Form2 : Form
     {
         public dynamic Person { get; set; }
+        List<dynamic> StarShips { get; set; } = new List<dynamic>();
         Form1 form1;
+        ParkingTimerForm form3 { get; set; }
         public Form2(Form1 parent)
         {
             InitializeComponent();
+            form3 = new ParkingTimerForm(this);
             form1 = parent;
         }
 
@@ -25,44 +29,22 @@ namespace SpaceApp
 
         private async void button1_Click_1Async(object sender, EventArgs e)
         {
-            //var ships = await GetShipsAsync();
             var list = await GetShipsFromSelectedPerson();
-            foreach (var ship in list)
+            if (list.Count != 0)
             {
-                listBox.Items.Add($"{Person["name"]} äger skeppet {ship["name"]}");
+                foreach (var ship in list)
+                {
+                    listBox.Items.Add($"{ship["name"]}, owned by {Person["name"]}");
+                    StarShips.Add(ship);
+                }
+            } else
+            {
+                listBox.Items.Add($"{Person["name"]} doesn't own a starship");
             }
         }
         private void button2_Click(object sender, EventArgs e)
         {
             GetAllShipsAsync();
-        }
-
-        public async Task<List<dynamic>> GetRandomShipsAsync()
-        {
-            List<dynamic> ships = new List<dynamic>();
-            Rest starwars = new Rest();
-            Random rand = new Random();
-
-            try
-            {
-                var page = rand.Next(1, 5);
-                var response = await starwars.StarWarsApiRequestAsync($"starships/?page={page}");
-                var ship = starwars.Deserialize<dynamic>(response);
-
-                //Få ut 3 st random ship åt gången när man klickar på sök-knappen
-                for (var i = 0; i < 3; i++)
-                {
-                    var randomship = rand.Next(1, 10);
-                    var results = ship["results"][randomship];
-                    ships.Add(results);
-                    if (results != null) listBox.Items.Add($"Shipname: {results["name"]} kostar {results["cost_in_credits"]}");
-                }
-            }
-            catch (Exception)
-            {
-                listBox.Items.Add("Ops, något fel hände");
-            }
-            return ships;
         }
 
         public async void GetAllShipsAsync()
@@ -80,7 +62,11 @@ namespace SpaceApp
                     for (var j = 0; j < ship["results"].Count; j++)
                     {
                         var results = ship["results"][j];
-                        if (results != null) listBox.Items.Add($"{results["name"]}      cost: {results["cost_in_credits"]}");
+                        if (results != null)
+                        {
+                            StarShips.Add(results);
+                            listBox.Items.Add($"{results["name"]}");
+                        }
                     }
                 }
             } 
@@ -89,7 +75,7 @@ namespace SpaceApp
                 listBox.Items.Add("Ops, något fel hände");
             }
         }
-        public async Task<List<dynamic>> GetShipsFromSelectedPerson()
+        async Task<List<dynamic>> GetShipsFromSelectedPerson()
         {
             Rest starwars = new Rest();
             var ships = Person["starships"];
@@ -108,29 +94,34 @@ namespace SpaceApp
 
         private void ShipIsSelected(object sender, EventArgs e)
         {
+            if (listBox.SelectedItem != null) shipLabelSelected.Text = listBox.SelectedItem.ToString();
             Color green = Color.FromName("greenyellow");
             SelectShip.Enabled = true;
-            SelectShip.BackColor = green;          
+            SelectShip.BackColor = green;
         }
 
+        //Välj skepp knapp
         private async void button1_Click(object sender, EventArgs e)
         {
-            if (listBox.SelectedItem != null) MessageBox.Show($"{listBox.SelectedItem}");
-            ParkingTimerForm timer = new ParkingTimerForm();
-            await Task.Delay(1000);
-            timer.Show();
-            this.Hide();
+            if (listBox.SelectedItem != null)
+            {
+                string[] shipname = listBox.SelectedItem.ToString().Split(',');
+                foreach (var ship in StarShips.ToList())
+                {
+                    if (ship["name"] == shipname[0])
+                    {
+                        await Task.Delay(1000);
+                        form3.ShowForm(Person, ship);
+                        this.Hide();
+                    }
+                }
+            }
         }
 
-        private void listBox_SelectedIndexChanged(object sender, EventArgs e)
+        private void GoBack(object sender, EventArgs e)
         {
-
+            this.Hide();
+            form1.Show();
         }
     }
-
-    /*public class RundKnapp : Button
-    {
-        GraphicsPath p = new GraphicsPath();
-        p.AddEllipse()
-    }*/
 }
